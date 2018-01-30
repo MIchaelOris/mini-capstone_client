@@ -1,3 +1,8 @@
+require 'paint'
+
+MARGIN = 10
+
+
 module ProductsViews
   def products_show_view(product)
     puts 
@@ -39,6 +44,9 @@ module ProductsViews
 
     print "Image Url: "
     client_params[:image_url] = gets.chomp
+
+    print "Supplier Id: "
+    client_params[:supplier_id] = gets.chomp
 
     client_params
   end

@@ -17,14 +17,15 @@ module ProductsController
 
   def products_create_action
     client_params = products_new_form
-    response = Unirest.post(
-                            "http://localhost:3000/products",
-                            parameters: client_params
-                            )
+    #response = Unirest.post(
+                           # "http://localhost:3000/products",
+                            #parameters: client_params
+                            #)
 
-    if response.code == 200
-      product_hash = response.body
-      product = Product.new(product_hash)
+    json_data = post_request("/product", client_params)
+
+    if !json_data["errors"]
+      product = Product.new(json_data)
       products_show_view(product)
     else
       errors = response.body["errors"]
@@ -42,6 +43,14 @@ module ProductsController
                             "http://localhost:3000/products/#{input_id}",
                             parameters: client_params
                             )
+json_data = patch_request("/product"/#{"input_id"},client_params)
+
+  if !json_data["errors"]
+      product = Product.new(json_data)
+      products_update_view(product)
+
+
+
 
     if response.code == 200
       product_hash = response.body
