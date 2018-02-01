@@ -21,6 +21,8 @@ class Frontend
     puts "    [3] Create a new product"
     puts "    [4] Update a product"
     puts "    [5] Destroy a product"
+    puts "    [6] Order a product"
+
 
     input_option = gets.chomp
 
@@ -38,12 +40,66 @@ class Frontend
       products_show_action
     elsif input_option == "3"
       products_create_action
+      
     elsif input_option == "4"
       products_update_action
     elsif input_option == "5"
       products_destroy_action
+
+    elsif input_option "signup"
+      puts "Signup for a new account"
+
+      puts client_params = {}
+
+        print "Name: "
+        client_params[:name] = gets.chomp
+
+        print "Price: "
+        client_params[:price] = gets.chomp
+
+        print "Description: "
+        client_params[:description] = gets.chomp
+        
+        print "Password: "
+        client_params[:password] = gets.chomp
+
+        print "Password Confirmation: "
+        client_params[:password_confirmation] = gets.chomp
+
+        json_data = post_request("/users", client_params) 
+        puts JSON.pretty_generate(json_data)
+      elsif input_option == "login"
+        puts "Login"
+        puts
+        print "Name: "
+        input_email = gets.chomp
+
+        print "Password: "
+        input_password = gets.chomp
+
+        response = Unirest.post(
+                                "http://localhost:3000/user_token",
+                                parameters: {
+                                              auth: {
+                                                    name: input_name,
+                                                    password: input_password
+                                                    }
+                                            }
+                                )
+        puts JSON.pretty_generate(response.body)
+        jwt = response.body["jwt"]
+        Unirest.default_header("Authorization", "Bearer #{jwt}")
+      elsif input_option == "logout"
+        #jwt = ""
+        Unirest.clear_default_headers
+      elsif input_option == "q"
+        # "Thank you for visiting!"
+        exit
+      end
+      gets.chomp
     end
   end
+
 
 private
   def get_request(url, client_params={})
@@ -62,4 +118,5 @@ private
     Unirest.delete("http://localhost:3000#{url}", parameters: client_params).body
   end
 end
+
 

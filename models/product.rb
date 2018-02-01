@@ -20,12 +20,12 @@ class Product
   end
 
   def self.convert_hashs(product_hashs)
-    collection = []
+      collection = []
 
     product_hashs.each do |product_hash|
       collection << Product.new(product_hash)
     end
 
-    collection
+      collection
   end
 end
